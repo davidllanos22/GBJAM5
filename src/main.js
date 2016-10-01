@@ -1,7 +1,7 @@
-var body = WIZARD.physics.createAABB(32, 55, 16, 16);
-var body2 = WIZARD.physics.createAABB(100, 48, 32, 32);
+var playerBody = WIZARD.physics.createAABB(32, 55, 16, 8);
+var carBody = WIZARD.physics.createAABB(16, 16, 85, 32);
 
-var speed = 0.2;
+var speed = 0.1;
 
 wizard({
     width: 160,
@@ -9,38 +9,42 @@ wizard({
     scale: 3,
     pixelArt: true,
     create: function(){
-        this.loadImages("spritesheet.png");
+        this.loadImages("player.png", "cars.png");
         this.loadSounds("sound01.wav");
-        WIZARD.spritesheet.create("spritesheet", "spritesheet", 16, 32);
+        WIZARD.spritesheet.create("player", 16, 32);
+        WIZARD.spritesheet.create("cars", 96, 32);
         WIZARD.animation.createFrameAnimation("random", [[0,0]], 500);
+
+        MAFIA.state.load();
     },
 
     update: function(){
-        if(body.x > this.width) body.x = - 16;
-        else if(body.x < - 16) body.x = this.width;
-        if(body.y > this.height) body.y = - 16;
-        else if(body.y < - 16) body.y = this.height;
-
         if(WIZARD.input.keyPressed(WIZARD.keys.A) || WIZARD.input.keyPressed(WIZARD.keys.LEFT)){
-            body.x -= speed;
+            playerBody.x -= speed;
         }else if(WIZARD.input.keyPressed(WIZARD.keys.D) || WIZARD.input.keyPressed(WIZARD.keys.RIGHT)){
-            body.x += speed;
+            playerBody.x += speed;
         }if(WIZARD.input.keyPressed(WIZARD.keys.W) || WIZARD.input.keyPressed(WIZARD.keys.UP)){
-            body.y -= speed;
+            playerBody.y -= speed;
         }if(WIZARD.input.keyPressed(WIZARD.keys.S) || WIZARD.input.keyPressed(WIZARD.keys.DOWN)){
-            body.y += speed;
+            playerBody.y += speed;
+        }
+
+        if(WIZARD.input.keyPressed(WIZARD.keys.SPACEBAR)){
+            MAFIA.progress.score = Math.random() * 200;
+            MAFIA.state.save();
         }
     },
+
     render: function(){
         this.clear("#686868");
-        //this.drawSprite("spritesheet", 16, 16, 1, 1);
-        this.drawAnimation("spritesheet", "random", body.x, body.y);
-        if(WIZARD.physics.intersects(body, body2)){
-            this.drawAABB(body, "#ff0000");
-            this.drawAABB(body2, "#ff0000");
+        this.drawSprite("cars", carBody.x, carBody.y, 0, 0);
+        this.drawAnimation("player", "random", playerBody.x, playerBody.y - 24);
+        if(WIZARD.physics.intersects(playerBody, carBody)){
+            this.drawAABB(playerBody, "#ff0000");
+            this.drawAABB(carBody, "#ff0000");
         }else{
-            this.drawAABB(body, "#00ff00");
-            this.drawAABB(body2, "#00ff00");
+            this.drawAABB(playerBody, "#00ff00");
+            this.drawAABB(carBody, "#00ff00");
         }
     }
 }).play();
