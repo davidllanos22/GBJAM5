@@ -5,7 +5,7 @@ wizard({
     pixelArt: true,
     create: function(){
         this.loadImages("player.png", "cars.png", "font.png", "effects.png");
-        this.loadSounds("talk.wav");
+        this.loadSounds("talk.wav", "bootup.mp3");
         WIZARD.spritesheet.create("player", 16, 32);
         WIZARD.spritesheet.create("cars", 96, 32);
         WIZARD.spritesheet.create("font", 8, 8);
@@ -28,7 +28,7 @@ wizard({
     },
 
     render: function(){
-        this.clear(MAFIA.constants.originalColors[2]);
+        this.clear(MAFIA.constants.originalColors[3]);
         MAFIA.scenes.current.render(this);
     }
 }).play();

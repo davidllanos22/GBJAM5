@@ -20,6 +20,33 @@ MAFIA.scenes = {
     },
     current: null,
     splash: {
+        logoBody: WIZARD.physics.createAABB(24, -16, 85, 32),
+        inPosition: false,
+
+        onEnter: function(wiz){
+            MAFIA.transitionEffects.fadeBrightToNormal();
+        },
+        update: function(wiz){
+            if(this.logoBody.y >= 68 && !this.inPosition){
+                wiz.playSound("bootup");
+                this.inPosition = true;
+                WIZARD.time.createTimer("bootupWait",2000, function(){
+                    MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 0, wiz);
+                }, 1);
+            }
+
+            if(!this.inPosition){
+                this.logoBody.y += 0.1;
+            }
+        },
+        render: function(wiz){
+            wiz.drawText("davidllanos22*", this.logoBody.x, this.logoBody.y);
+        },
+        onExit: function(wiz){
+            MAFIA.transitionEffects.fadeNormalToBright();
+        }
+    },
+    walk: {
         carBody: WIZARD.physics.createAABB(16, 16, 85, 32),
 
         onEnter: function(wiz){
@@ -29,7 +56,7 @@ MAFIA.scenes = {
             MAFIA.entities.player.update(wiz);
 
             if(WIZARD.input.keyJustPressed(WIZARD.keys.SPACEBAR)){
-                MAFIA.scenes.setCurrent(MAFIA.scenes.other, 500);
+                MAFIA.scenes.setCurrent(MAFIA.scenes.car, 500);
             }
         },
         render: function(wiz){
@@ -51,7 +78,7 @@ MAFIA.scenes = {
             MAFIA.transitionEffects.fadeNormalToBright();
         }
     },
-    other: {
+    car: {
 
         onEnter: function(wiz){
             MAFIA.transitionEffects.fadeBrightToNormal();
@@ -59,7 +86,7 @@ MAFIA.scenes = {
         update: function(wiz){
             MAFIA.entities.playerCar.update(wiz);
             if(WIZARD.input.keyJustPressed(WIZARD.keys.SPACEBAR)){
-                MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 500);
+                MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500);
             }
         },
         render: function(wiz){

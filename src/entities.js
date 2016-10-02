@@ -26,7 +26,6 @@ MAFIA.entities = {
             }
 
             if(this.lastAnimationAndDirection != this.animation + this.direction){
-                console.log("diff");
                 WIZARD.animation.reset(this.lastAnimationAndDirection);
             }
             this.lastAnimationAndDirection = this.animation + this.direction;
