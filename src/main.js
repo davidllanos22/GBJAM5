@@ -4,12 +4,20 @@ wizard({
     scale: 3,
     pixelArt: true,
     create: function(){
-        this.loadImages("player.png", "cars.png", "font.png");
-        this.loadSounds("sound01.wav");
+        this.loadImages("player.png", "cars.png", "font.png", "effects.png");
+        this.loadSounds("talk.wav");
         WIZARD.spritesheet.create("player", 16, 32);
         WIZARD.spritesheet.create("cars", 96, 32);
         WIZARD.spritesheet.create("font", 8, 8);
-        WIZARD.animation.createFrameAnimation("random", [[0,0]], 500);
+        WIZARD.spritesheet.create("effects", 16, 16);
+        WIZARD.animation.createFrameAnimation("player_idle_down", [[0,0]], 100);
+        WIZARD.animation.createFrameAnimation("player_walk_down", [[1,0],[0,0],[2,0],[0,0]], 300);
+        WIZARD.animation.createFrameAnimation("player_idle_up", [[0,1]], 100);
+        WIZARD.animation.createFrameAnimation("player_walk_up", [[1,1],[0,1],[2,1],[0,1]], 300);
+        WIZARD.animation.createFrameAnimation("player_idle_left", [[0,2]], 100);
+        WIZARD.animation.createFrameAnimation("player_walk_left", [[0,2]], 100);
+        WIZARD.animation.createFrameAnimation("player_idle_right", [[0,3]], 100);
+        WIZARD.animation.createFrameAnimation("player_walk_right", [[0,3]], 100);
 
         MAFIA.state.load();
         MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
@@ -20,7 +28,7 @@ wizard({
     },
 
     render: function(){
-        this.clear("#686868");
+        this.clear(MAFIA.constants.originalColors[2]);
         MAFIA.scenes.current.render(this);
     }
 }).play();
