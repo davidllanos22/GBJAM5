@@ -1,6 +1,12 @@
 var MAFIA = MAFIA || {};
 
 MAFIA.constants = {
+    originalColors:[
+        "#000000",
+        "#686868",
+        "#b7b7b7",
+        "#FFFFFF"
+    ],
     colors: [
         WIZARD.utils.hexToRgb(0x101f27),
         WIZARD.utils.hexToRgb(0x356953),
@@ -71,7 +77,7 @@ MAFIA.scenes = {
         carBody: WIZARD.physics.createAABB(16, 16, 85, 32),
 
         onEnter: function(){
-            MAFIA.transitionEffects.fadeDarkToNormal();
+            MAFIA.transitionEffects.fadeBrightToNormal();
         },
         update: function(wiz){
             if(WIZARD.input.keyPressed(WIZARD.keys.A) || WIZARD.input.keyPressed(WIZARD.keys.LEFT)){
@@ -98,9 +104,13 @@ MAFIA.scenes = {
                 wiz.drawAABB(this.playerBody, "#00ff00");
                 wiz.drawAABB(this.carBody, "#00ff00");
             }
+            wiz.drawText("Hello world!", 0 , 0);
+            wiz.drawText("Is this ok?", 0 , 8);
+            wiz.drawText("I think so. No,yes.", 0 , 16);
+
         },
         onExit: function(){
-            MAFIA.transitionEffects.fadeNormalToDark();
+            MAFIA.transitionEffects.fadeNormalToBright();
         }
     },
     other: {
@@ -108,7 +118,7 @@ MAFIA.scenes = {
         carBody: WIZARD.physics.createAABB(16, 16, 85, 32),
 
         onEnter: function(){
-            MAFIA.transitionEffects.fadeDarkToNormal();
+            MAFIA.transitionEffects.fadeBrightToNormal();
         },
         update: function(wiz){
             if(WIZARD.input.keyPressed(WIZARD.keys.A) || WIZARD.input.keyPressed(WIZARD.keys.LEFT)){
@@ -137,7 +147,7 @@ MAFIA.scenes = {
             }
         },
         onExit: function(){
-            MAFIA.transitionEffects.fadeNormalToDark();
+            MAFIA.transitionEffects.fadeNormalToBright();
         }
     }
 };

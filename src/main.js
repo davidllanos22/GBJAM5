@@ -4,10 +4,11 @@ wizard({
     scale: 3,
     pixelArt: true,
     create: function(){
-        this.loadImages("player.png", "cars.png");
+        this.loadImages("player.png", "cars.png", "font.png");
         this.loadSounds("sound01.wav");
         WIZARD.spritesheet.create("player", 16, 32);
         WIZARD.spritesheet.create("cars", 96, 32);
+        WIZARD.spritesheet.create("font", 8, 8);
         WIZARD.animation.createFrameAnimation("random", [[0,0]], 500);
 
         MAFIA.state.load();
