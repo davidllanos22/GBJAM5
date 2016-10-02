@@ -54,21 +54,23 @@ MAFIA.strings = {
 };
 
 MAFIA.scenes = {
-    setCurrent: function(scene, delay){
+    setCurrent: function(scene, delay, wiz){
         if(this.current != null && this.current.onExit != null){
-            this.current.onExit();
+            this.current.onExit(wiz);
         }
         if(delay != null && delay != 0) {
 
             WIZARD.time.createTimer("sceneTransition", delay, function () {
                 if (MAFIA.scenes.current != null && MAFIA.scenes.current.onEnter != null) {
                     MAFIA.scenes.current = scene;
-                    MAFIA.scenes.current.onEnter();
+                    MAFIA.scrollingText.reset();
+                    MAFIA.scenes.current.onEnter(wiz);
                 }
             }, 1, true);
         }else{
             MAFIA.scenes.current = scene;
-            MAFIA.scenes.current.onEnter();
+            MAFIA.scrollingText.reset();
+            MAFIA.scenes.current.onEnter(wiz);
         }
     },
     current: null,
@@ -76,7 +78,7 @@ MAFIA.scenes = {
         playerBody: WIZARD.physics.createAABB(32, 55, 16, 8),
         carBody: WIZARD.physics.createAABB(16, 16, 85, 32),
 
-        onEnter: function(){
+        onEnter: function(wiz){
             MAFIA.transitionEffects.fadeBrightToNormal();
         },
         update: function(wiz){
@@ -104,12 +106,13 @@ MAFIA.scenes = {
                 wiz.drawAABB(this.playerBody, "#00ff00");
                 wiz.drawAABB(this.carBody, "#00ff00");
             }
-            wiz.drawText("Hello world!", 0 , 0);
+            MAFIA.scrollingText.show("Hello world!", 0 , 0, wiz);
+
             wiz.drawText("Is this ok?", 0 , 8);
             wiz.drawText("I think so. No,yes.", 0 , 16);
 
         },
-        onExit: function(){
+        onExit: function(wiz){
             MAFIA.transitionEffects.fadeNormalToBright();
         }
     },
@@ -117,7 +120,7 @@ MAFIA.scenes = {
         playerBody: WIZARD.physics.createAABB(32, 100, 16, 8),
         carBody: WIZARD.physics.createAABB(16, 16, 85, 32),
 
-        onEnter: function(){
+        onEnter: function(wiz){
             MAFIA.transitionEffects.fadeBrightToNormal();
         },
         update: function(wiz){
@@ -145,8 +148,10 @@ MAFIA.scenes = {
                 wiz.drawAABB(this.playerBody, "#00ff00");
                 wiz.drawAABB(this.carBody, "#00ff00");
             }
+
+            MAFIA.scrollingText.show("WILL THIS WORK?", 0 , 0, wiz);
         },
-        onExit: function(){
+        onExit: function(wiz){
             MAFIA.transitionEffects.fadeNormalToBright();
         }
     }
@@ -193,5 +198,24 @@ MAFIA.transitionEffects = {
             }
             count++;
         }, 4, true);
+    }
+};
+
+MAFIA.scrollingText = {
+    textToShow: "",
+    count: 0,
+    show: function(text, x, y, wiz){
+        var speed = 100;
+        var thiz = this;
+        WIZARD.time.createTimer("scrollingText", speed, function(){
+            thiz.textToShow = text.substr(0, thiz.count );
+            thiz.count++;
+        }, text.length + 1, false);
+        wiz.drawText(this.textToShow, x, y);
+    },
+    reset: function(){
+        this.textToShow = "";
+        this.count = 0;
+        if(WIZARD.timers["scrollingText"] != null) delete WIZARD.timers["scrollingText"];
     }
 };

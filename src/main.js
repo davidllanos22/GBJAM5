@@ -12,7 +12,7 @@ wizard({
         WIZARD.animation.createFrameAnimation("random", [[0,0]], 500);
 
         MAFIA.state.load();
-        MAFIA.scenes.setCurrent(MAFIA.scenes.splash);
+        MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
     },
 
     update: function(){
