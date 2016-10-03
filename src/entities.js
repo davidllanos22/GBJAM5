@@ -13,14 +13,30 @@ MAFIA.entities = {
     addEntity: function(entity, list){
         list.push(entity);
     },
+
     removeEntity: function(entity, list){
         list.splice(list.indexOf(entity), 1);
     },
-    player: function(){ //change to function to create new instances
+
+    player: function(){
+        this.name = "Player";
         this.animation = "player_idle_";
         this.body = WIZARD.physics.createAABB(32, 55, 16, 8);
         this.direction = "down";
         this.lastAnimationAndDirection = "";
+
+        var body = this.body;
+        function collides(){
+            for(var i = 0; i < MAFIA.scenes.current.entities.length; i++){
+                var e = MAFIA.scenes.current.entities[i];
+                if(e.name != "Player"){
+                    if(WIZARD.physics.intersects(body, e.body)){
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         this.update = function(wiz){
             this.animation = "player_idle_";
@@ -28,18 +44,30 @@ MAFIA.entities = {
                 this.animation = "player_walk_";
                 this.direction = "left";
                 this.body.x -= MAFIA.constants.playerSpeed;
+                if(collides()){
+                    this.body.x += MAFIA.constants.playerSpeed;
+                }
             }else if(WIZARD.input.keyPressed(WIZARD.keys.D) || WIZARD.input.keyPressed(WIZARD.keys.RIGHT)){
                 this.animation = "player_walk_";
                 this.direction = "right";
                 this.body.x += MAFIA.constants.playerSpeed;
+                if(collides()){
+                    this.body.x -= MAFIA.constants.playerSpeed;
+                }
             }if(WIZARD.input.keyPressed(WIZARD.keys.W) || WIZARD.input.keyPressed(WIZARD.keys.UP)){
                 this.animation = "player_walk_";
                 this.direction = "up";
                 this.body.y -= MAFIA.constants.playerSpeed;
+                if(collides()){
+                    this.body.y += MAFIA.constants.playerSpeed;
+                }
             }if(WIZARD.input.keyPressed(WIZARD.keys.S) || WIZARD.input.keyPressed(WIZARD.keys.DOWN)){
                 this.animation = "player_walk_";
                 this.direction = "down";
                 this.body.y += MAFIA.constants.playerSpeed;
+                if(collides()){
+                    this.body.y -= MAFIA.constants.playerSpeed;
+                }
             }
 
             if(this.lastAnimationAndDirection != this.animation + this.direction){
@@ -49,16 +77,16 @@ MAFIA.entities = {
         };
 
         this.render = function(wiz){
-            wiz.drawAABB(this.body, "blue");
             wiz.drawSprite("effects", this.body.x, this.body.y - 1, 0, 0);
             wiz.drawAnimation("player", this.animation + this.direction, this.body.x, this.body.y - 24);
+            wiz.drawAABB(this.body, "blue");
         };
     },
     playerCar: function(){
-        this.body = WIZARD.physics.createAABB(16, 16, 85, 32),
+        this.name = "PlayerCar";
+        this.body = WIZARD.physics.createAABB(16, 16, 85, 32);
 
         this.update = function(wiz){
-
             if(WIZARD.input.keyPressed(WIZARD.keys.A) || WIZARD.input.keyPressed(WIZARD.keys.LEFT)){
                 this.body.x -= MAFIA.constants.playerCarSpeed;
             }else if(WIZARD.input.keyPressed(WIZARD.keys.D) || WIZARD.input.keyPressed(WIZARD.keys.RIGHT)){
@@ -76,9 +104,11 @@ MAFIA.entities = {
         };
         this.render = function(wiz){
             wiz.drawSprite("cars", this.body.x, this.body.y, 0, 0);
+            wiz.drawAABB(this.body, "blue");
         };
     },
     propCar: function(x, y){
+        this.name = "PropCar";
         this.body = WIZARD.physics.createAABB(x, y, 85, 24),
 
         this.update = function(wiz){
@@ -86,10 +116,11 @@ MAFIA.entities = {
         };
         this.render = function(wiz){
             wiz.drawSprite("cars", this.body.x, this.body.y - 8, 0, 0);
-            wiz.drawAABB(this.body, "#00ff00");
+            wiz.drawAABB(this.body, "yellow");
         };
     },
     enemy: function(x, y){
+        this.name = "Enemy";
         this.animation = "enemy_idle_";
         this.body = WIZARD.physics.createAABB(x, y, 16, 8);
         this.direction = "down";
@@ -103,6 +134,19 @@ MAFIA.entities = {
         this.render = function(wiz){
             wiz.drawSprite("effects", this.body.x, this.body.y - 1, 0, 0);
             wiz.drawAnimation("player", this.animation + this.direction, this.body.x, this.body.y - 24);
+            wiz.drawAABB(this.body, "yellow");
+        };
+    },
+    bullet: function(x, y, shooter, direction){
+        this.name = "Bullet";
+        this.body = WIZARD.physics.createAABB(x, y, 4, 4);
+
+        this.update = function(wiz){
+        };
+
+        this.render = function(wiz){
+            wiz.drawSprite("effects", this.body.x, this.body.y - 1, 2, 0);
+            wiz.drawAABB(this.body, "red");
         };
     }
 };

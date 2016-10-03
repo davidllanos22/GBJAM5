@@ -50,13 +50,14 @@ MAFIA.scenes = {
         entities: [],
 
         onEnter: function(wiz){
+            this.entities = [];
             MAFIA.transitionEffects.fadeBrightToNormal();
             MAFIA.entities.addEntity(new MAFIA.entities.player(), this.entities);
-            for(var i = 0; i <10; i++){
-                MAFIA.entities.addEntity(new MAFIA.entities.enemy(Math.random() * 160, Math.random() * 144), this.entities);
+            for(var i = 0; i <2; i++){
+                MAFIA.entities.addEntity(new MAFIA.entities.enemy(Math.random() * 160, Math.random() * 144 - 32), this.entities);
             }
-            for(var i = 0; i <3; i++){
-                MAFIA.entities.addEntity(new MAFIA.entities.propCar(Math.random() * 160, Math.random() * 144), this.entities);
+            for(var i = 0; i <1; i++){
+                MAFIA.entities.addEntity(new MAFIA.entities.propCar(Math.random() * 160 - 96, Math.random() * 144 - 32), this.entities);
             }
         },
         update: function(wiz){
@@ -80,14 +81,6 @@ MAFIA.scenes = {
                 this.entities[i].render(wiz);
             }
 
-
-            // if(WIZARD.physics.intersects(this.playerBody, this.carBody)){
-            //     wiz.drawAABB(this.playerBody, "#ff0000");
-            //     wiz.drawAABB(this.carBody, "#ff0000");
-            // }else{
-            //     wiz.drawAABB(this.playerBody, "#00ff00");
-            //     wiz.drawAABB(this.carBody, "#00ff00");
-            // }
             MAFIA.scrollingText.show("Hello world!", 0, 136, wiz);
 
         },
@@ -97,8 +90,8 @@ MAFIA.scenes = {
     },
     car: {
         entities: [],
-
         onEnter: function(wiz){
+            this.entities = [];
             MAFIA.transitionEffects.fadeBrightToNormal();
             MAFIA.entities.addEntity(new MAFIA.entities.playerCar(), this.entities);
         },
@@ -115,14 +108,6 @@ MAFIA.scenes = {
             for(var i = 0; i < this.entities.length; i++){
                 this.entities[i].render(wiz);
             }
-            // if(WIZARD.physics.intersects(this.playerBody, this.carBody)){
-            //     wiz.drawAABB(this.playerBody, "#ff0000");
-            //     wiz.drawAABB(this.carBody, "#ff0000");
-            // }else{
-            //     wiz.drawAABB(this.playerBody, "#00ff00");
-            //     wiz.drawAABB(this.carBody, "#00ff00");
-            // }
-
             MAFIA.scrollingText.show("GOTTA GO FAST!!1!", 0 , 0, wiz);
         },
         onExit: function(wiz){
