@@ -48,11 +48,18 @@ MAFIA.scenes = {
     },
     walk: {
         entities: [],
+        tiles0: [],
+        tiles1: [],
 
         onEnter: function(wiz){
             this.entities = [];
+            this.tiles0 = [];
+            this.tiles1 = [];
+
             MAFIA.transitionEffects.fadeBrightToNormal();
-            MAFIA.entities.addEntity(new MAFIA.entities.player(), this.entities);
+            MAFIA.entities.addEntity(new MAFIA.entities.player(32, 55), this.entities);
+
+            MAFIA.maps.loadMapToCurrentScene(MAFIA.maps.test);
             for(var i = 0; i <2; i++){
                 MAFIA.entities.addEntity(new MAFIA.entities.enemy(Math.random() * 160, Math.random() * 144 - 32), this.entities);
             }
@@ -70,18 +77,23 @@ MAFIA.scenes = {
             }
         },
         render: function(wiz){
-            for(var x = 0; x < 10; x++){
-                for(var y = 0; y < 10; y++) {
-                    wiz.drawSprite("tiles", x * 16, y * 16, 0, 1);
-                }
+            // for(var x = 0; x < 10; x++){
+            //     for(var y = 0; y < 10; y++) {
+            //         wiz.drawSprite("tiles", x * 16, y * 16, 0, 1);
+            //     }
+            // }
+            for(var i = 0; i < this.tiles0.length; i++){
+                this.tiles0[i].render(wiz);
             }
-
             MAFIA.entities.sortEntities(this.entities);
             for(var i = 0; i < this.entities.length; i++){
                 this.entities[i].render(wiz);
             }
+            for(var i = 0; i < this.tiles1.length; i++){
+                this.tiles1[i].render(wiz);
+            }
 
-            MAFIA.scrollingText.show("Hello world!", 0, 136, wiz);
+            MAFIA.scrollingText.show("Glitch city", 0, 136, wiz);
 
         },
         onExit: function(wiz){

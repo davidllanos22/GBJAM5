@@ -5,7 +5,7 @@ wizard({
     pixelArt: true,
     create: function(){
         this.loadImages("player.png", "cars.png", "font.png", "effects.png", "tiles.png");
-        this.loadSounds("talk.wav", "bootup.mp3");
+        this.loadSounds("talk.wav", "bootup.mp3", "shot.wav", "hit.wav");
         WIZARD.spritesheet.create("player", 16, 32);
         WIZARD.spritesheet.create("cars", 96, 32);
         WIZARD.spritesheet.create("font", 8, 8);
