@@ -4,12 +4,13 @@ wizard({
     scale: 3,
     pixelArt: true,
     create: function(){
-        this.loadImages("player.png", "cars.png", "font.png", "effects.png");
+        this.loadImages("player.png", "cars.png", "font.png", "effects.png", "tiles.png");
         this.loadSounds("talk.wav", "bootup.mp3");
         WIZARD.spritesheet.create("player", 16, 32);
         WIZARD.spritesheet.create("cars", 96, 32);
         WIZARD.spritesheet.create("font", 8, 8);
         WIZARD.spritesheet.create("effects", 16, 16);
+        WIZARD.spritesheet.create("tiles", 16, 16);
         WIZARD.animation.createFrameAnimation("player_idle_down", [[0,0]], 100);
         WIZARD.animation.createFrameAnimation("player_walk_down", [[1,0],[0,0],[2,0],[0,0]], 300);
         WIZARD.animation.createFrameAnimation("player_idle_up", [[0,1]], 100);
@@ -19,8 +20,10 @@ wizard({
         WIZARD.animation.createFrameAnimation("player_idle_right", [[0,3]], 100);
         WIZARD.animation.createFrameAnimation("player_walk_right", [[0,3]], 100);
 
+        WIZARD.animation.createFrameAnimation("enemy_idle_down", [[7,0]], 100);
+
         MAFIA.state.load();
-        MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
+        MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 0, this);
     },
 
     update: function(){

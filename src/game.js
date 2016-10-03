@@ -115,3 +115,8 @@ MAFIA.scrollingText = {
         if(WIZARD.timers["scrollingText"] != null) delete WIZARD.timers["scrollingText"];
     }
 };
+
+MAFIA.utils = {
+
+
+};
