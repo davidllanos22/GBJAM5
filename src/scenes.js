@@ -90,10 +90,85 @@ MAFIA.scenes = {
             MAFIA.transitionEffects.fadeNormalToBright();
         }
     },
+    mission_select: {
+        logoBody: WIZARD.physics.createAABB(4, 112, 85, 32),
+        selected: 0,
+        strings: [MAFIA.strings.getString("start_mission"), MAFIA.strings.getString("shop")],
+
+        onEnter: function(wiz){
+            MAFIA.transitionEffects.fadeBrightToNormal();
+        },
+        update: function(wiz){
+            if(WIZARD.input.keyJustPressed(WIZARD.keys.UP)){
+                this.selected --;
+                if(this.selected == -1) this.selected = this.strings.length - 1;
+            }else if(WIZARD.input.keyJustPressed(WIZARD.keys.DOWN)){
+                this.selected ++;
+                this.selected %= this.strings.length;
+            }
+
+            if(WIZARD.input.keyJustPressed(WIZARD.keys.X)){
+                if(this.selected == 0){
+                    if(MAFIA.progress.level == 0){
+                    }else if(MAFIA.progress.level == 1){
+                    }else if(MAFIA.progress.level == 2){
+                    }
+
+                    console.log("Mission " + MAFIA.progress.level + " selected.");
+                    //MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
+                }else if(this.selected == 1){
+
+                }else if(this.selected == 2){
+                    //TODO: sonido éxito(ta-chán)
+                    MAFIA.state.save();
+                }
+            }
+            if(WIZARD.input.keyJustPressed(WIZARD.keys.X)){
+
+            }
+        },
+        render: function(wiz){
+            wiz.clear(MAFIA.constants.originalColors[1]);
+
+            for(var i = 0; i < this.strings.length; i++){
+                if(this.selected == i){
+                    wiz.drawText(">" + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                }else{
+                    wiz.drawText(" " + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                }
+            }
+
+            for(var i = 0; i < 10; i++) {
+                wiz.drawSprite("menu", i * 16, 0, 4, 0);
+                if (i == 4 || i == 9) {
+                    if(i > MAFIA.progress.level){
+                        wiz.drawSprite("menu", i * 16, 0, 3, 1);
+                    }else{
+                        wiz.drawSprite("menu", i * 16, 0, 3, 0);
+                    }
+                }else {
+                    if(i > MAFIA.progress.level){
+                        wiz.drawSprite("menu", i * 16, 0, 2, 1);
+                    }else{
+                        wiz.drawSprite("menu", i * 16, 0, 2, 0);
+                    }
+                }
+            }
+            wiz.drawAnimation("menu", "menu_mission_cursor", MAFIA.progress.level * 16, 0);
+
+            wiz.drawText(MAFIA.strings.getString("mission_" + MAFIA.progress.level+"_1"), 0, 48);
+            wiz.drawText(MAFIA.strings.getString("mission_" + MAFIA.progress.level+"_2"), 0, 56);
+        },
+
+        onExit: function(wiz){
+            MAFIA.transitionEffects.fadeNormalToBright();
+        }
+    },
     walk: {
         entities: [],
         tiles0: [],
         tiles1: [],
+        player: null,
 
         onEnter: function(wiz){
             this.entities = [];
@@ -146,10 +221,12 @@ MAFIA.scenes = {
     },
     car: {
         entities: [],
+        tiles0: [],
+        tiles1: [],
         onEnter: function(wiz){
             this.entities = [];
             MAFIA.transitionEffects.fadeBrightToNormal();
-            MAFIA.entities.addEntity(new MAFIA.entities.playerCar(), this.entities);
+            MAFIA.maps.loadMapToCurrentScene(MAFIA.maps.test);
         },
         update: function(wiz){
             for(var i = 0; i < this.entities.length; i++){
@@ -160,11 +237,16 @@ MAFIA.scenes = {
             }
         },
         render: function(wiz){
+            for(var i = 0; i < this.tiles0.length; i++){
+                this.tiles0[i].render(wiz);
+            }
             MAFIA.entities.sortEntities(this.entities);
             for(var i = 0; i < this.entities.length; i++){
                 this.entities[i].render(wiz);
             }
-            MAFIA.scrollingText.show("GOTTA GO FAST!!1!", 0 , 0, wiz);
+            for(var i = 0; i < this.tiles1.length; i++){
+                this.tiles1[i].render(wiz);
+            }
         },
         onExit: function(wiz){
             MAFIA.transitionEffects.fadeNormalToBright();

@@ -128,14 +128,77 @@ MAFIA.strings = {
     "es":{
         "start": "empezar",
         "load": "cargar",
-        "change_palette": "cambiar paleta"
+        "change_palette": "cambiar paleta",
+        "start_mission": "empezar mision",
+        "shop": "tienda",
+        "save": "guardar",
+        "mission_0_1": "Elimina a todos los",
+        "mission_0_2": "gangsters",
+
+        "mission_1_1": "Descripcion mision 2",
+        "mission_1_2": "Descripcion mision 2",
+
+        "mission_2_1": "Descripcion mision 3",
+        "mission_2_2": "Descripcion mision 3",
+
+        "mission_3_1": "Descripcion mision 4",
+        "mission_3_2": "Descripcion mision 4",
+
+        "mission_4_1": "Descripcion mision 5",
+        "mission_4_2": "Descripcion mision 5",
+
+        "mission_5_1": "Descripcion mision 6",
+        "mission_5_2": "Descripcion mision 6",
+
+        "mission_6_1": "Descripcion mision 7",
+        "mission_6_2": "Descripcion mision 7",
+
+        "mission_7_1": "Descripcion mision 8",
+        "mission_7_2": "Descripcion mision 8",
+
+        "mission_8_1": "Descripcion mision 9",
+        "mission_8_2": "Descripcion mision 9",
+
+        "mission_9_1": "Descripcion mision 10",
+        "mission_9_2": "Descripcion mision 10",
 
     },
     "en":{
-        "start": "start",
-        "load": "load",
-        "change_palette": "change palette"
+        "start": "new game",
+        "load": "load game",
+        "change_palette": "change palette",
+        "start_mission": "start mission",
+        "shop": "shop",
+        "save": "save",
+        "mission_0_1": "Eliminate all",
+        "mission_0_2": "gangsters",
 
+        "mission_1_1": "Description mision 2",
+        "mission_1_2": "Description mision 2",
+
+        "mission_2_1": "Description mision 3",
+        "mission_2_2": "Description mision 3",
+
+        "mission_3_1": "Description mision 4",
+        "mission_3_2": "Description mision 4",
+
+        "mission_4_1": "Description mision 5",
+        "mission_4_2": "Description mision 5",
+
+        "mission_5_1": "Description mision 6",
+        "mission_5_2": "Description mision 6",
+
+        "mission_6_1": "Description mision 7",
+        "mission_6_2": "Description mision 7",
+
+        "mission_7_1": "Description mision 8",
+        "mission_7_2": "Description mision 8",
+
+        "mission_8_1": "Description mision 9",
+        "mission_8_2": "Description mision 9",
+
+        "mission_9_1": "Description mision 10",
+        "mission_9_2": "Description mision 10",
     }
 };
 
@@ -247,13 +310,15 @@ MAFIA.maps = {
                 if(id != -1){
                     if(id == 574) { //player
                         console.log("PLAYER");
-                        MAFIA.entities.addEntity(new MAFIA.entities.player(x * 16, y * 16), MAFIA.scenes.current.entities);
+                        var player = new MAFIA.entities.player(x * 16, y * 16);
+                        MAFIA.scenes.current.player = player;
+                        MAFIA.entities.addEntity(player, MAFIA.scenes.current.entities);
                     }else if(id == 575) { //enemy
                         console.log("ENEMY");
                         MAFIA.entities.addEntity(new MAFIA.entities.enemy(x * 16, y * 16), MAFIA.scenes.current.entities);
                     }else if(id == 550) { //car
                         console.log("CAR");
-
+                        MAFIA.entities.addEntity(new MAFIA.entities.playerCar(x * 16, y * 16),  MAFIA.scenes.current.entities);
                     }else if(id == 552) { //boss 1
                         console.log("BOSS 1");
 
@@ -279,7 +344,7 @@ MAFIA.maps = {
                   spriteSheetWidth: 24
               },
               {
-                  data:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 0, 0, 0, 0, 6, 7, 0, 0, 0, 0, 6, 7, 0, 0, 0, 0, 6, 0, 30, 31, 0, 0, 0, 0, 30, 31, 0, 0, 0, 0, 30, 31, 0, 0, 0, 0, 30, 0, 54, 55, 0, 0, 0, 0, 54, 55, 0, 0, 8, 9, 54, 55, 0, 0, 0, 0, 54, 0, 78, 79, 0, 0, 0, 0, 78, 79, 0, 0, 32, 33, 78, 79, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                  data:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 7, 0, 0, 0, 0, 6, 7, 0, 0, 0, 0, 6, 7, 0, 0, 0, 0, 6, 0, 30, 31, 0, 0, 0, 0, 30, 31, 0, 0, 0, 0, 30, 31, 0, 0, 0, 0, 30, 0, 54, 55, 0, 0, 0, 0, 54, 55, 0, 0, 8, 9, 54, 55, 0, 0, 0, 0, 54, 0, 78, 79, 0, 0, 0, 0, 78, 79, 0, 0, 32, 33, 78, 79, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 551, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                   height:15,
                   width:20,
                   spriteSheetWidth: 24

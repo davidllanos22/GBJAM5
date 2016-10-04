@@ -125,9 +125,9 @@ MAFIA.entities = {
             }
         };
     },
-    playerCar: function(){
+    playerCar: function(x, y){
         this.name = "PlayerCar";
-        this.body = WIZARD.physics.createAABB(16, 16, 85, 32);
+        this.body = WIZARD.physics.createAABB(x, y, 85, 32);
         this.hitBody = this.body;
 
         this.update = function(wiz){
@@ -176,8 +176,8 @@ MAFIA.entities = {
         this.direction = "down";
         this.lastAnimationAndDirection = "";
         this.health = MAFIA.constants.enemyHealth;
-        this.targetX = x * 16;
-        this.targetY = y * 16;
+        this.targetX = x;
+        this.targetY = y;
 
         this._onAdded = function(){
             var easystar = new EasyStar.js();
@@ -196,19 +196,22 @@ MAFIA.entities = {
             easystar.setGrid(array);
             easystar.setAcceptableTiles([0]);
 
-            console.log(Math.floor(this.body.x / 16) + " " +  Math.floor(this.body.y / 16));
-
-            var body = this.body;
             var id = this.id;
 
             var thiz = this;
 
-            easystar.findPath(Math.floor(this.body.x / 16), Math.floor(this.body.y / 16), 0, 0, function(path) {
+            var xx = Math.floor(this.body.x / 16);
+            var yy = Math.floor(this.body.y / 16);
+
+            var px = Math.floor(MAFIA.scenes.current.player.body.x / 16);
+            var py = Math.floor(MAFIA.scenes.current.player.body.y / 16);
+
+            easystar.findPath(xx, yy, px, py, function(path) {
                 if (path === null) {
                     console.log("Path was not found.");
                 } else {
                     var count = 0;
-                    WIZARD.time.createTimer("a*_" + id, 500, function(){
+                    WIZARD.time.createTimer("a*_" + id, 800, function(){
                         thiz.targetX = path[count].x * 16;
                         thiz.targetY = path[count].y * 16;
                         count++;
@@ -219,6 +222,7 @@ MAFIA.entities = {
             easystar.setIterationsPerCalculation(1000);
             easystar.calculate();
         };
+
 
         this.hurt = function(damage){
             this.health -= damage;
@@ -235,9 +239,8 @@ MAFIA.entities = {
             this.animation = "enemy_idle_";
             this.lastAnimationAndDirection = this.animation + this.direction;
 
-            var x = WIZARD.math.lerp(this.body.x, this.targetX, 0.1);
-            var y = WIZARD.math.lerp(this.body.y, this.targetY, 0.1);
-            console.log(x + " " + y);
+            var x = WIZARD.math.lerp(this.body.x, this.targetX, 0.02);
+            var y = WIZARD.math.lerp(this.body.y, this.targetY, 0.02);
 
             this.body.x = x;
             this.body.y = y;
