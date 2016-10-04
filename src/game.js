@@ -1,5 +1,40 @@
 var MAFIA = MAFIA || {};
 
+
+var colors = [
+    [
+        WIZARD.utils.hexToRgb(0x101f27),
+        WIZARD.utils.hexToRgb(0x356953),
+        WIZARD.utils.hexToRgb(0x85c070),
+        WIZARD.utils.hexToRgb(0xdefacf)
+    ],
+    [
+        WIZARD.utils.hexToRgb(0x1d1d1d),
+        WIZARD.utils.hexToRgb(0x444935),
+        WIZARD.utils.hexToRgb(0x808a62),
+        WIZARD.utils.hexToRgb(0xbcc897)
+    ],
+    [
+        WIZARD.utils.hexToRgb(0x201203),
+        WIZARD.utils.hexToRgb(0x205b57),
+        WIZARD.utils.hexToRgb(0xac7074),
+        WIZARD.utils.hexToRgb(0xd7eddf)
+    ],
+    [
+        WIZARD.utils.hexToRgb(0x47496c),
+        WIZARD.utils.hexToRgb(0x317474),
+        WIZARD.utils.hexToRgb(0x68bb63),
+        WIZARD.utils.hexToRgb(0x96e47c)
+    ],
+    [
+        WIZARD.utils.hexToRgb(0x555b77),
+        WIZARD.utils.hexToRgb(0x457874),
+        WIZARD.utils.hexToRgb(0x46eb47f),
+        WIZARD.utils.hexToRgb(0xe5f48b)
+    ]
+
+];
+
 MAFIA.constants = {
     debug: false,
     originalColors:[
@@ -9,10 +44,37 @@ MAFIA.constants = {
         "#FFFFFF"
     ],
     colors: [
-        WIZARD.utils.hexToRgb(0x101f27),
-        WIZARD.utils.hexToRgb(0x356953),
-        WIZARD.utils.hexToRgb(0x85c070),
-        WIZARD.utils.hexToRgb(0xdefacf)
+        [
+            WIZARD.utils.hexToRgb(0x101f27),
+            WIZARD.utils.hexToRgb(0x356953),
+            WIZARD.utils.hexToRgb(0x85c070),
+            WIZARD.utils.hexToRgb(0xdefacf)
+        ],
+        [
+            WIZARD.utils.hexToRgb(0x1d1d1d),
+            WIZARD.utils.hexToRgb(0x444935),
+            WIZARD.utils.hexToRgb(0x808a62),
+            WIZARD.utils.hexToRgb(0xbcc897)
+        ],
+        [
+            WIZARD.utils.hexToRgb(0x201203),
+            WIZARD.utils.hexToRgb(0x205b57),
+            WIZARD.utils.hexToRgb(0xac7074),
+            WIZARD.utils.hexToRgb(0xd7eddf)
+        ],
+        [
+            WIZARD.utils.hexToRgb(0x47496c),
+            WIZARD.utils.hexToRgb(0x317474),
+            WIZARD.utils.hexToRgb(0x68bb63),
+            WIZARD.utils.hexToRgb(0x96e47c)
+        ],
+        [
+            WIZARD.utils.hexToRgb(0x555b77),
+            WIZARD.utils.hexToRgb(0x457874),
+            WIZARD.utils.hexToRgb(0x46eb47f),
+            WIZARD.utils.hexToRgb(0xe5f48b)
+        ]
+
     ],
     playerSpeed: 0.1,
     playerCarSpeed: 0.5,
@@ -25,7 +87,16 @@ MAFIA.constants = {
 };
 
 MAFIA.globals = {
-    currentColors: MAFIA.constants.colors,
+    setCurrentColorIndex: function(index){
+        //console.log("Changing color index: " + index);
+        this.currentColorIndex = index;
+    },
+    setCurrentColorArray: function(array){
+        //console.log("Changing color array: " + array);
+        this.currentColorArray = array;
+    },
+    currentColorIndex: 0,
+    currentColorArray: MAFIA.constants.colors[0]
 };
 
 MAFIA.progress = {
@@ -36,10 +107,14 @@ MAFIA.progress = {
 MAFIA.state = {
     load: function(){
         var progress = JSON.parse(WIZARD.state.load("mafia"));
-        if(progress != null) MAFIA.progress = progress;
+        if(progress != null){
+            console.log("State loaded.");
+            MAFIA.progress = progress;
+        }
     },
 
     save: function(){
+        console.log("State saved.");
         WIZARD.state.save("mafia", JSON.stringify(MAFIA.progress));
     }
 };
@@ -52,51 +127,69 @@ MAFIA.strings = {
         return this[l][name];
     },
     "es":{
-        "emboscada": "¡Emboscada!"
+        "start": "empezar",
+        "load": "cargar",
+        "change_palette": "cambiar paleta"
+
     },
     "en":{
-        "emboscada": "Ambush!"
+        "start": "start",
+        "load": "load",
+        "change_palette": "change palette"
+
     }
 };
 
 MAFIA.transitionEffects = {
     fadeNormalToBright: function(){
+        console.log("NB");
         var count = 0;
+        var index = MAFIA.globals.currentColorIndex;
         WIZARD.time.createTimer("fadeNormalToBright", 100, function(){
-            for(var i = 0; i <  MAFIA.constants.colors.length - 1 - count; i++){
-                MAFIA.globals.currentColors[i] = MAFIA.globals.currentColors[i+1]
+            console.log("AAA" + (colors[index].length - 1 - count));
+            for(var i = 0; i <  colors[index].length - 1 - count; i++){
+                MAFIA.globals.currentColorArray[i] = MAFIA.globals.currentColorArray[i+1];
             }
             count++;
         }, 4, true);
     },
 
     fadeDarkToNormal: function(){
+        console.log("DN");
         var count = 0;
-        MAFIA.globals.currentColors = [MAFIA.constants.colors[0], MAFIA.constants.colors[0], MAFIA.constants.colors[0], MAFIA.constants.colors[0]]
+        var index = MAFIA.globals.currentColorIndex;
+        var color = colors[index][0];
+        MAFIA.globals.currentColorArray = [color, color, color, color];
         WIZARD.time.createTimer("fadeDarkToNormal", 100, function(){
-            for(var i = MAFIA.constants.colors.length - 1; i > MAFIA.constants.colors.length - 1 - count; i--){
-                MAFIA.globals.currentColors[i] = MAFIA.constants.colors[i - (3 - count)];
+            console.log("AAA" + (colors[index].length - 1));
+            for(var i = colors[index].length - 1; i > colors[index].length - 1 - count; i--){
+                MAFIA.globals.currentColorArray[i] = colors[index][i - (3 - count)];
             }
             count++;
         }, 4, true);
     },
 
     fadeBrightToNormal: function(){
+        console.log("BN");
         var count = 0;
-        MAFIA.globals.currentColors = [MAFIA.constants.colors[3], MAFIA.constants.colors[3], MAFIA.constants.colors[3], MAFIA.constants.colors[3]]
+        var index = MAFIA.globals.currentColorIndex;
+        var color = colors[index][3];
+        MAFIA.globals.currentColorArray = [color, color, color, color];
         WIZARD.time.createTimer("fadeBrightToNormal", 100, function(){
             for(var i = 0; i < count; i++){
-                MAFIA.globals.currentColors[i] = MAFIA.constants.colors[i + (3 - count)];
+                MAFIA.globals.currentColorArray[i] = colors[index][i + (3 - count)];
             }
             count++;
         }, 4, true);
     },
 
     fadeNormalToDark: function(){
+        console.log("ND");
         var count = 0;
+        var index = MAFIA.globals.currentColorIndex;
         WIZARD.time.createTimer("fadeNormalToDark", 100, function(){
-            for(var i = MAFIA.constants.colors.length; i > count; i--){
-                MAFIA.globals.currentColors[i] = MAFIA.globals.currentColors[i-1]
+            for(var i = colors[index].length; i > count; i--){
+                MAFIA.globals.currentColorArray[i] = MAFIA.globals.currentColorArray[i-1];
             }
             count++;
         }, 4, true);
@@ -155,7 +248,6 @@ MAFIA.maps = {
                     MAFIA.entities.addEntity(new MAFIA.entities.tile(x * 16, y * 16, xx, yy, true), tiles);
                 }
             }
-            console.log(out);
         }
     },
 

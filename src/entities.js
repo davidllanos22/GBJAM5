@@ -226,7 +226,6 @@ MAFIA.entities = {
                 var e = MAFIA.scenes.current.entities[i];
                 if(e.id != this.id && e.name != shooter){
                     if(WIZARD.physics.intersects(this.body, e.hitBody)){
-                        console.log(e.name + " hit!");
                         return e;
                     }
                 }
@@ -266,7 +265,6 @@ MAFIA.entities = {
     muzzleFlash: function(x, y, direction){
         this.name = "MuzzleFlash";
         this.body = WIZARD.physics.createAABB(x, y + (direction != "up" ? 7 : 0), 0, 0);
-        console.log(this.body.y);
 
         this._onAdded = function(){
             var id = this.id;

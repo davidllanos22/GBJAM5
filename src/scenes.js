@@ -31,7 +31,7 @@ MAFIA.scenes = {
                 wiz.playSound("bootup");
                 this.inPosition = true;
                 WIZARD.time.createTimer("bootupWait",2000, function(){
-                    MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 0, wiz);
+                    MAFIA.scenes.setCurrent(MAFIA.scenes.menu, 0, wiz);
                 }, 1);
             }
 
@@ -41,6 +41,50 @@ MAFIA.scenes = {
         },
         render: function(wiz){
             wiz.drawText("davidllanos22*", this.logoBody.x, this.logoBody.y);
+        },
+        onExit: function(wiz){
+            MAFIA.transitionEffects.fadeNormalToBright();
+        }
+    },
+    menu: {
+        logoBody: WIZARD.physics.createAABB(4, 112, 85, 32),
+        selected: 0,
+        strings: [MAFIA.strings.getString("start"), MAFIA.strings.getString("load")],
+
+        onEnter: function(wiz){
+            MAFIA.transitionEffects.fadeBrightToNormal();
+        },
+        update: function(wiz){
+            if(WIZARD.input.keyJustPressed(WIZARD.keys.UP)){
+                this.selected --;
+                if(this.selected == -1) this.selected = this.strings.length - 1;
+            }else if(WIZARD.input.keyJustPressed(WIZARD.keys.DOWN)){
+                this.selected ++;
+                this.selected %= this.strings.length;
+            }
+
+            if(WIZARD.input.keyJustPressed(WIZARD.keys.X)){
+                if(this.selected == 0){
+                    MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
+                }else if(this.selected == 1){
+                    MAFIA.state.load();
+                    MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
+                }else if(this.selected == 2){
+                    console.log("Changing palette");
+                }
+            }
+        },
+        render: function(wiz){
+             wiz.clear(MAFIA.constants.originalColors[2]);
+            wiz.drawImage("title_bg", 0, 0);
+
+            for(var i = 0; i < this.strings.length; i++){
+                if(this.selected == i){
+                    wiz.drawText(">" + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                }else{
+                    wiz.drawText(" " + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                }
+            }
         },
         onExit: function(wiz){
             MAFIA.transitionEffects.fadeNormalToBright();

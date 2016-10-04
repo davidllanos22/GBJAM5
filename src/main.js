@@ -4,7 +4,7 @@ wizard({
     scale: 3,
     pixelArt: true,
     create: function(){
-        this.loadImages("player.png", "cars.png", "font.png", "effects.png", "tiles.png");
+        this.loadImages("player.png", "cars.png", "font.png", "effects.png", "tiles.png", "title_bg.png");
         this.loadSounds("talk.wav", "bootup.mp3", "shot.wav", "hit.wav");
         WIZARD.spritesheet.create("player", 16, 32);
         WIZARD.spritesheet.create("cars", 96, 32);
@@ -22,11 +22,26 @@ wizard({
 
         WIZARD.animation.createFrameAnimation("enemy_idle_down", [[7,0]], 100);
 
-        MAFIA.state.load();
-        MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 0, this);
+        MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
     },
 
     update: function(){
+        if(WIZARD.input.keyJustPressed(WIZARD.keys.ONE)){
+            MAFIA.globals.setCurrentColorIndex(0);
+            MAFIA.globals.setCurrentColorArray(MAFIA.constants.colors[0]);
+        }else if(WIZARD.input.keyJustPressed(WIZARD.keys.TWO)){
+            MAFIA.globals.setCurrentColorIndex(1);
+            MAFIA.globals.setCurrentColorArray(MAFIA.constants.colors[1]);
+        }else if(WIZARD.input.keyJustPressed(WIZARD.keys.THREE)){
+            MAFIA.globals.setCurrentColorIndex(2);
+            MAFIA.globals.setCurrentColorArray(MAFIA.constants.colors[2]);
+        }else if(WIZARD.input.keyJustPressed(WIZARD.keys.FOUR)){
+            MAFIA.globals.setCurrentColorIndex(3);
+            MAFIA.globals.setCurrentColorArray(MAFIA.constants.colors[3]);
+        }else if(WIZARD.input.keyJustPressed(WIZARD.keys.FIVE)){
+            MAFIA.globals.setCurrentColorIndex(4);
+            MAFIA.globals.setCurrentColorArray(MAFIA.constants.colors[4]);
+        }
         MAFIA.scenes.current.update(this);
     },
 
