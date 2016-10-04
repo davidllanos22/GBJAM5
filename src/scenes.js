@@ -101,7 +101,7 @@ MAFIA.scenes = {
             this.tiles1 = [];
 
             MAFIA.transitionEffects.fadeBrightToNormal();
-            MAFIA.entities.addEntity(new MAFIA.entities.player(32, 55), this.entities);
+            // MAFIA.entities.addEntity(new MAFIA.entities.player(32, 55), this.entities);
 
             MAFIA.maps.loadMapToCurrentScene(MAFIA.maps.indoor);
             // for(var i = 0; i <2; i++){

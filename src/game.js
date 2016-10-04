@@ -88,11 +88,9 @@ MAFIA.constants = {
 
 MAFIA.globals = {
     setCurrentColorIndex: function(index){
-        //console.log("Changing color index: " + index);
         this.currentColorIndex = index;
     },
     setCurrentColorArray: function(array){
-        //console.log("Changing color array: " + array);
         this.currentColorArray = array;
     },
     currentColorIndex: 0,
@@ -101,7 +99,8 @@ MAFIA.globals = {
 
 MAFIA.progress = {
     score: 0,
-    cash: 0
+    cash: 0,
+    level: 0
 };
 
 MAFIA.state = {
@@ -222,7 +221,9 @@ MAFIA.utils = {
 };
 
 MAFIA.maps = {
+    current: null,
     loadMapToCurrentScene: function(map){
+        this.current = map;
         var scene = MAFIA.scenes.current;
         for(var i = 0; i < map.layers.length; i++){
             var width =  map.layers[i].width;
@@ -244,8 +245,26 @@ MAFIA.maps = {
                     out += "(" + xx + "," + yy + "), ";
 
                 if(id != -1){
-                    var tiles = i == 0 ? scene.tiles0 : scene.tiles1;
-                    MAFIA.entities.addEntity(new MAFIA.entities.tile(x * 16, y * 16, xx, yy, true), tiles);
+                    if(id == 574) { //player
+                        console.log("PLAYER");
+                        MAFIA.entities.addEntity(new MAFIA.entities.player(x * 16, y * 16), MAFIA.scenes.current.entities);
+                    }else if(id == 575) { //enemy
+                        console.log("ENEMY");
+                        MAFIA.entities.addEntity(new MAFIA.entities.enemy(x * 16, y * 16), MAFIA.scenes.current.entities);
+                    }else if(id == 550) { //car
+                        console.log("CAR");
+
+                    }else if(id == 552) { //boss 1
+                        console.log("BOSS 1");
+
+                    }else if(id == 527) { //boss 2
+                        console.log("BOSS 2");
+
+                    }else{
+                        var tiles = i == 0 ? scene.tiles0 : scene.tiles1;
+                        MAFIA.entities.addEntity(new MAFIA.entities.tile(x * 16, y * 16, xx, yy, true), tiles);
+                    }
+
                 }
             }
         }
@@ -267,7 +286,6 @@ MAFIA.maps = {
               }
           ]
     },
-
     indoor:{
         layers: [
             {
@@ -277,7 +295,7 @@ MAFIA.maps = {
                 spriteSheetWidth: 24
             },
             {
-                data:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 102, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 29, 126, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 76, 77, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 76, 77, 0, 0, 0, 0, 103, 100, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 29, 100, 101, 0, 0, 0, 0, 127, 124, 125, 0, 0, 0, 0, 0, 76, 77, 0, 0, 52, 53, 124, 125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 101, 103, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 124, 125, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 29, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 53, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                data:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 102, 102, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 29, 126, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 576, 0, 0, 0, 0, 0, 0, 0, 576, 0, 0, 0, 0, 76, 77, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 76, 77, 0, 0, 0, 0, 103, 100, 101, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 29, 100, 101, 0, 0, 0, 0, 127, 124, 125, 0, 0, 0, 0, 0, 76, 77, 0, 0, 52, 53, 124, 125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 101, 103, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 5, 0, 0, 0, 0, 124, 125, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 29, 102, 0, 576, 0, 0, 0, 0, 0, 0, 0, 576, 0, 0, 0, 0, 0, 0, 0, 52, 53, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 575, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                 height:15,
                 width:20,
                 spriteSheetWidth: 24

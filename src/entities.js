@@ -176,6 +176,49 @@ MAFIA.entities = {
         this.direction = "down";
         this.lastAnimationAndDirection = "";
         this.health = MAFIA.constants.enemyHealth;
+        this.targetX = x * 16;
+        this.targetY = y * 16;
+
+        this._onAdded = function(){
+            var easystar = new EasyStar.js();
+            var array = [];
+            var map = MAFIA.maps.current.layers[1];
+            var width =  map.width;
+            for(var i = 0; i < map.data.length; i++){
+                var x = Math.floor(i % width);
+                var y = Math.floor(i / width);
+                var a = [];
+                if(x == 0){
+                    array.push(a);
+                }
+                array[y].push(map.data[i]);
+            }
+            easystar.setGrid(array);
+            easystar.setAcceptableTiles([0]);
+
+            console.log(Math.floor(this.body.x / 16) + " " +  Math.floor(this.body.y / 16));
+
+            var body = this.body;
+            var id = this.id;
+
+            var thiz = this;
+
+            easystar.findPath(Math.floor(this.body.x / 16), Math.floor(this.body.y / 16), 0, 0, function(path) {
+                if (path === null) {
+                    console.log("Path was not found.");
+                } else {
+                    var count = 0;
+                    WIZARD.time.createTimer("a*_" + id, 500, function(){
+                        thiz.targetX = path[count].x * 16;
+                        thiz.targetY = path[count].y * 16;
+                        count++;
+                    }, path.length, false);
+                }
+            });
+            easystar.enableDiagonals();
+            easystar.setIterationsPerCalculation(1000);
+            easystar.calculate();
+        };
 
         this.hurt = function(damage){
             this.health -= damage;
@@ -192,8 +235,15 @@ MAFIA.entities = {
             this.animation = "enemy_idle_";
             this.lastAnimationAndDirection = this.animation + this.direction;
 
+            var x = WIZARD.math.lerp(this.body.x, this.targetX, 0.1);
+            var y = WIZARD.math.lerp(this.body.y, this.targetY, 0.1);
+            console.log(x + " " + y);
+
+            this.body.x = x;
+            this.body.y = y;
             this.hitBody.x = this.body.x;
             this.hitBody.y = this.body.y - 12;
+
         };
 
         this.render = function(wiz){
