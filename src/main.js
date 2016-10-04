@@ -22,7 +22,7 @@ wizard({
 
         WIZARD.animation.createFrameAnimation("enemy_idle_down", [[7,0]], 100);
 
-        MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
+        MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 0, this);
     },
 
     update: function(){

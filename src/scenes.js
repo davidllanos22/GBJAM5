@@ -75,7 +75,7 @@ MAFIA.scenes = {
             }
         },
         render: function(wiz){
-             wiz.clear(MAFIA.constants.originalColors[2]);
+            wiz.clear(MAFIA.constants.originalColors[2]);
             wiz.drawImage("title_bg", 0, 0);
 
             for(var i = 0; i < this.strings.length; i++){
@@ -103,13 +103,13 @@ MAFIA.scenes = {
             MAFIA.transitionEffects.fadeBrightToNormal();
             MAFIA.entities.addEntity(new MAFIA.entities.player(32, 55), this.entities);
 
-            MAFIA.maps.loadMapToCurrentScene(MAFIA.maps.test);
-            for(var i = 0; i <2; i++){
-                MAFIA.entities.addEntity(new MAFIA.entities.enemy(Math.random() * 160, Math.random() * 144 - 32), this.entities);
-            }
-            for(var i = 0; i <1; i++){
-                MAFIA.entities.addEntity(new MAFIA.entities.propCar(Math.random() * 160 - 96, Math.random() * 144 - 32), this.entities);
-            }
+            MAFIA.maps.loadMapToCurrentScene(MAFIA.maps.indoor);
+            // for(var i = 0; i <2; i++){
+            //     MAFIA.entities.addEntity(new MAFIA.entities.enemy(Math.random() * 160, Math.random() * 144 - 32), this.entities);
+            // }
+            // for(var i = 0; i <1; i++){
+            //     MAFIA.entities.addEntity(new MAFIA.entities.propCar(Math.random() * 160 - 96, Math.random() * 144 - 32), this.entities);
+            // }
         },
         update: function(wiz){
             for(var i = 0; i < this.entities.length; i++){
@@ -121,6 +121,7 @@ MAFIA.scenes = {
             }
         },
         render: function(wiz){
+            wiz.clear(MAFIA.constants.originalColors[1]);
             // for(var x = 0; x < 10; x++){
             //     for(var y = 0; y < 10; y++) {
             //         wiz.drawSprite("tiles", x * 16, y * 16, 0, 1);
@@ -137,8 +138,7 @@ MAFIA.scenes = {
                 this.tiles1[i].render(wiz);
             }
 
-            MAFIA.scrollingText.show("Glitch city", 0, 136, wiz);
-
+            MAFIA.scrollingText.show("Glitch city", WIZARD.camera.x, WIZARD.camera.y + 136, wiz);
         },
         onExit: function(wiz){
             MAFIA.transitionEffects.fadeNormalToBright();

@@ -112,6 +112,8 @@ MAFIA.entities = {
 
             this.hitBody.x = this.body.x;
             this.hitBody.y = this.body.y - 12;
+
+            WIZARD.camera.setPosition(this.body.x - 80 + 8, this.body.y - 72);
         };
 
         this.render = function(wiz){
