@@ -1,5 +1,5 @@
 <p align="center">
-    <img alt="MafiaBoy" src="assets/img/logo.png?raw=true">
+    <img alt="MafiaBoy" src="assets/img/logo01.png?raw=true">
 </p>
 
 ---
