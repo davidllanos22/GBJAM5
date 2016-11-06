@@ -65,10 +65,10 @@ MAFIA.scenes = {
 
             if(WIZARD.input.keyJustPressed(WIZARD.keys.X)){
                 if(this.selected == 0){
-                    MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
+                    MAFIA.scenes.setCurrent(MAFIA.scenes.mission_select, 500, wiz);
                 }else if(this.selected == 1){
                     MAFIA.state.load();
-                    MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
+                    MAFIA.scenes.setCurrent(MAFIA.scenes.mission_select, 500, wiz);
                 }else if(this.selected == 2){
                     console.log("Changing palette");
                 }
@@ -110,8 +110,11 @@ MAFIA.scenes = {
             if(WIZARD.input.keyJustPressed(WIZARD.keys.X)){
                 if(this.selected == 0){
                     if(MAFIA.progress.level == 0){
+                        MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
                     }else if(MAFIA.progress.level == 1){
+                        MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
                     }else if(MAFIA.progress.level == 2){
+                        MAFIA.scenes.setCurrent(MAFIA.scenes.walk, 500, wiz);
                     }
 
                     console.log("Mission " + MAFIA.progress.level + " selected.");
@@ -122,6 +125,8 @@ MAFIA.scenes = {
                     //TODO: sonido éxito(ta-chán)
                     MAFIA.state.save();
                 }
+            }else  if(WIZARD.input.keyJustPressed(WIZARD.keys.C)){
+                MAFIA.scenes.setCurrent(MAFIA.scenes.menu, 500, wiz);
             }
             if(WIZARD.input.keyJustPressed(WIZARD.keys.X)){
 

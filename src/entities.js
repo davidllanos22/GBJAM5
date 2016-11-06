@@ -203,8 +203,8 @@ MAFIA.entities = {
             var xx = Math.floor(this.body.x / 16);
             var yy = Math.floor(this.body.y / 16);
 
-            var px = Math.floor(MAFIA.scenes.current.player.body.x / 16);
-            var py = Math.floor(MAFIA.scenes.current.player.body.y / 16);
+            var px = 0;//Math.floor(MAFIA.scenes.current.player.body.x / 16);
+            var py = 0;//Math.floor(MAFIA.scenes.current.player.body.y / 16);
 
             easystar.findPath(xx, yy, px, py, function(path) {
                 if (path === null) {

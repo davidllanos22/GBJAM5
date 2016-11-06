@@ -26,7 +26,7 @@ wizard({
 
         WIZARD.animation.createFrameAnimation("menu_mission_cursor", [[0,0], [1,0]], 200);
 
-        MAFIA.scenes.setCurrent(MAFIA.scenes.car, 0, this);
+        MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
     },
 
     update: function(){
