@@ -61,6 +61,7 @@ wizard({
     create: function(){
         this.loadImages("player.png", "cars.png", "font.png", "effects.png", "tiles.png", "title_bg.png", "menu.png");
         this.loadSounds("talk.wav", "bootup.mp3", "shot.wav", "hit.wav");
+
         WIZARD.spritesheet.create("player", 16, 32);
         WIZARD.spritesheet.create("cars", 96, 32);
         WIZARD.spritesheet.create("font", 8, 8);
@@ -81,11 +82,22 @@ wizard({
 
         WIZARD.animation.createFrameAnimation("menu_mission_cursor", [[0,0], [1,0]], 200);
 
+        WIZARD.scene.create("splash", scene_splash);
+        WIZARD.scene.create("menu", scene_menu);
+        WIZARD.scene.create("mission_select", scene_mission_select);
+        WIZARD.scene.create("walk", scene_walk);
+        WIZARD.scene.create("car", scene_car);
+        WIZARD.scene.setCurrent("walk", 0, this);
+
+        WIZARD.entity.create("player", entity_player);
+        WIZARD.entity.create("tile", entity_tile);
+        WIZARD.entity.create("solid", entity_solid);
+
+        WIZARD.map.create("mapWalk", mapWalk);
+        WIZARD.map.loadToScene("mapWalk", "walk", mapLoader);
+
         WIZARD.shader.create("gameboy", gameboy_vs, gameboy_fs);
         WIZARD.shader.setCurrent("gameboy");
-
-
-        MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
     },
 
     update: function(){
@@ -105,7 +117,7 @@ wizard({
             MAFIA.globals.setCurrentColorIndex(4);
             MAFIA.globals.setCurrentColorArray(MAFIA.constants.colors[4]);
         }
-        MAFIA.scenes.current.update(this);
+        WIZARD.scene.current.update(this);
     },
 
     render: function(){
@@ -114,8 +126,7 @@ wizard({
         this.gl.uniform3f(WIZARD.shader.getUniform("gameboy", "u_color3Out"), MAFIA.globals.currentColorArray[2].r,  MAFIA.globals.currentColorArray[2].g,  MAFIA.globals.currentColorArray[2].b);
         this.gl.uniform3f(WIZARD.shader.getUniform("gameboy", "u_color4Out"), MAFIA.globals.currentColorArray[3].r,  MAFIA.globals.currentColorArray[3].g,  MAFIA.globals.currentColorArray[3].b);
 
-
         this.clear(MAFIA.constants.originalColors[3]);
-        MAFIA.scenes.current.render(this);
+        WIZARD.scene.current.render(this);
     }
 }).play();
