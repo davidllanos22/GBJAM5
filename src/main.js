@@ -1,3 +1,58 @@
+var gameboy_vs = `attribute vec2 a_position;
+                    uniform sampler2D u_image;
+                    varying vec2 f_texcoord;
+                     
+                    void main(void){
+                      vec2 zeroToOne = a_position;
+                      vec2 zeroToTwo = zeroToOne * 2.0;
+                      vec2 clipSpace = zeroToTwo - 1.0;
+                      gl_Position = vec4(clipSpace * vec2(1, -1), 0.0, 1.0);
+                      f_texcoord = (clipSpace + 1.0) / 2.0;
+                    }
+                  `;
+
+var gameboy_fs = `precision mediump float;
+                    uniform sampler2D u_image;
+                    varying vec2 f_texcoord;
+                    
+                    const vec3 color1In = vec3(0.0, 0.0, 0.0);
+                    const vec3 color2In = vec3(104.0, 104.0, 104.0);
+                    const vec3 color3In = vec3(183.0, 183.0, 183.0);
+                    const vec3 color4In = vec3(255.0, 255.0, 255.0);
+                  
+                    uniform vec3 u_color1Out;
+                    uniform vec3 u_color2Out;
+                    uniform vec3 u_color3Out;
+                    uniform vec3 u_color4Out;
+                    
+                    vec3 convertColor(vec3 color){
+                        return vec3(color.r / 255.0, color.g / 255.0, color.b / 255.0);
+                    }
+                    
+                    bool colorEqual(vec3 a, vec3 b){
+                        vec3 converted = convertColor(b);
+                        vec3 eps = vec3(0.009, 0.009, 0.009);
+                        return all(greaterThanEqual(a, converted - eps)) && all(lessThanEqual(a, converted + eps));
+                    }
+                    
+                    void main(void){
+                      vec2 texcoord = f_texcoord;
+                      vec3 color = texture2D(u_image, texcoord).rgb;
+                      
+                      if(colorEqual(color, color1In)){
+                         color = convertColor(u_color1Out);
+                      }else if(colorEqual(color, color2In)){
+                         color = convertColor(u_color2Out);
+                      }else if(colorEqual(color, color3In)){
+                         color = convertColor(u_color3Out);
+                      }else if(colorEqual(color, color4In)){
+                         color = convertColor(u_color4Out);
+                      }
+                      
+                      gl_FragColor = vec4(color, 1.0);
+                     }
+                  `;
+
 wizard({
     width: 160,
     height: 144,
@@ -26,6 +81,10 @@ wizard({
 
         WIZARD.animation.createFrameAnimation("menu_mission_cursor", [[0,0], [1,0]], 200);
 
+        WIZARD.shader.create("gameboy", gameboy_vs, gameboy_fs);
+        WIZARD.shader.setCurrent("gameboy");
+
+
         MAFIA.scenes.setCurrent(MAFIA.scenes.splash, 0, this);
     },
 
@@ -50,6 +109,12 @@ wizard({
     },
 
     render: function(){
+        this.gl.uniform3f(WIZARD.shader.getUniform("gameboy", "u_color1Out"), MAFIA.globals.currentColorArray[0].r,  MAFIA.globals.currentColorArray[0].g,  MAFIA.globals.currentColorArray[0].b);
+        this.gl.uniform3f(WIZARD.shader.getUniform("gameboy", "u_color2Out"), MAFIA.globals.currentColorArray[1].r,  MAFIA.globals.currentColorArray[1].g,  MAFIA.globals.currentColorArray[1].b);
+        this.gl.uniform3f(WIZARD.shader.getUniform("gameboy", "u_color3Out"), MAFIA.globals.currentColorArray[2].r,  MAFIA.globals.currentColorArray[2].g,  MAFIA.globals.currentColorArray[2].b);
+        this.gl.uniform3f(WIZARD.shader.getUniform("gameboy", "u_color4Out"), MAFIA.globals.currentColorArray[3].r,  MAFIA.globals.currentColorArray[3].g,  MAFIA.globals.currentColorArray[3].b);
+
+
         this.clear(MAFIA.constants.originalColors[3]);
         MAFIA.scenes.current.render(this);
     }

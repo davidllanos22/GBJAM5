@@ -269,7 +269,7 @@ MAFIA.scrollingText = {
             thiz.textToShow = text.substr(0, thiz.count );
             thiz.count++;
         }, text.length + 1, false);
-        wiz.drawText(this.textToShow, x, y);
+        wiz.drawText(this.textToShow, x, y, "font");
     },
     reset: function(){
         this.textToShow = "";

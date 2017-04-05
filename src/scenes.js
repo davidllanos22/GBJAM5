@@ -40,7 +40,7 @@ MAFIA.scenes = {
             }
         },
         render: function(wiz){
-            wiz.drawText("davidllanos22*", this.logoBody.x, this.logoBody.y);
+            wiz.drawText("davidllanos22*", this.logoBody.x, this.logoBody.y, "font");
         },
         onExit: function(wiz){
             MAFIA.transitionEffects.fadeNormalToBright();
@@ -80,9 +80,9 @@ MAFIA.scenes = {
 
             for(var i = 0; i < this.strings.length; i++){
                 if(this.selected == i){
-                    wiz.drawText(">" + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                    wiz.drawText(">" + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8), "font");
                 }else{
-                    wiz.drawText(" " + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                    wiz.drawText(" " + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8), "font");
                 }
             }
         },
@@ -137,9 +137,9 @@ MAFIA.scenes = {
 
             for(var i = 0; i < this.strings.length; i++){
                 if(this.selected == i){
-                    wiz.drawText(">" + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                    wiz.drawText(">" + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8), "font");
                 }else{
-                    wiz.drawText(" " + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8));
+                    wiz.drawText(" " + this.strings[i], this.logoBody.x, this.logoBody.y + (i * 8), "font");
                 }
             }
 
@@ -161,8 +161,8 @@ MAFIA.scenes = {
             }
             wiz.drawAnimation("menu", "menu_mission_cursor", MAFIA.progress.level * 16, 0);
 
-            wiz.drawText(MAFIA.strings.getString("mission_" + MAFIA.progress.level+"_1"), 0, 48);
-            wiz.drawText(MAFIA.strings.getString("mission_" + MAFIA.progress.level+"_2"), 0, 56);
+            wiz.drawText(MAFIA.strings.getString("mission_" + MAFIA.progress.level+"_1"), 0, 48, "font");
+            wiz.drawText(MAFIA.strings.getString("mission_" + MAFIA.progress.level+"_2"), 0, 56, "font");
         },
 
         onExit: function(wiz){
